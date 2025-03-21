@@ -305,9 +305,6 @@ class GRPOTrainer(RLHFTrainerMixin, SwiftMixin, HFGRPOTrainer):
         layer_count = None
         for name, module in model.named_modules():
             if isinstance(module, ModuleList):
-                print(f"{model.model_meta=}")
-                print(f"{model_arch=}")
-                print(f"{name=}:\n{module}")
                 if model_arch is not None and isinstance(model_arch, MultiModelKeys):
                     llm = model_arch.language_model
                     if isinstance(llm, list):
