@@ -305,12 +305,19 @@ class GRPOTrainer(RLHFTrainerMixin, SwiftMixin, HFGRPOTrainer):
         layer_count = None
         for name, module in model.named_modules():
             if isinstance(module, ModuleList):
+                print(f"{model.model_meta=}")
+                print(f"{model_arch=}")
+                print(f"{name=}:\n{module}")
                 if model_arch is not None and isinstance(model_arch, MultiModelKeys):
                     llm = model_arch.language_model
                     if isinstance(llm, list):
                         llm = llm[0]
                     if name.startswith('base_model'):
                         name = name.replace('base_model.', '')
+                    if name.startswith('_model'):
+                        name = name.replace('_model.', '')
+                    if name.startswith('_ref_model'):
+                        name = name.replace('_ref_model.', '')
                     if name.startswith(llm):
                         layer_count = len(module)
                 else:
